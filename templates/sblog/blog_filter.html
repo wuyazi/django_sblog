@@ -1,0 +1,21 @@
+{% extends "blog_list.html" %}
+
+{% block title %} tag: {{ tag.tag_name }} {% endblock %}
+
+{% block taglist %}
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li><a href="{% url bloglist %}" data-toggle="tab">new blog</a></li>
+        {% for tagt in tags %}
+            {% if tagt == tag %}
+            <li class="active"><a href="{% url filtrblog tagt.id %}" data-toggle="tab">{{ tagt }}</a></li>
+            {% else %}
+            <li><a href="{% url filtrblog tagt.id %}" data-toggle="tab">{{ tagt }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block blogtag %}
+{% endblock %}

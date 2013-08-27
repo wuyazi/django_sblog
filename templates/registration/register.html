@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} register {% endblock %}
+
+{% block article %}
+    <div class="model row-fluid">
+        <form class="form-horizontal" action='register' method="post">
+            {% csrf_token %}
+            <legend class="text-center">Register</legend>
+            <div class="control-group span4 offset4">
+                {{form.as_p}}
+                <input type="submit" class="btn btn-primary span12 " value="Create the account">
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "blog_base.html" %}
+
+{% block title %} blogadd {% endblock %}   
+
+{% block article %} 
+<div class="row-fluid">
+<form action="{% url addblog %}" method="post">
+    {% csrf_token %}
+    <div class="field">
+        <label class="span1">tag:</label>
+        <div class="span11">
+        {% for tag in tags %}
+            <label class="radio inline">
+            <input type="radio" name="tagRadios" id={{tag.id}} value={{tag.id}} checked>
+            {{ tag }}
+            </label>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="field">
+        <label class="span12" for="id_caption">Caption: </label>
+        <textarea class="span12" type="text" rows="3" name="caption" value="" id="caption"></textarea>
+    </div>
+    <div class="field">
+        <label class="span12" for="id_content">Content: </label>
+        <textarea class="span12" type="text" rows="18" name="content" value="" id="content"></textarea>
+    </div>
+    <div class="">
+        <input class="btn btn-primary btn-large span4 offset4" type="submit" value="save and add">
+    </div>
+</form>
+</div>
+{% endblock %}
+
+{% block addblog %}
+{% endblock %}

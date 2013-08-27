@@ -1,0 +1,43 @@
+{% extends "blog_base.html" %}
+
+{% block title %} V2FX {% endblock %}
+
+{% block taglist %}
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{% url bloglist %}" data-toggle="tab">new blog</a></li>
+        {% for tag in tags %}
+            <li><a href="{% url filtrblog tag.id %}" data-toggle="tab">{{ tag }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block article %}
+<article class='content-main'>
+    {% for blog in blogs %}
+        <h3><a href="{% url detailblog blog.id %}">{{ blog.caption }}</a></h3>
+        <div class="row-fluid">
+            <div class="span6">
+                <p class="muted">
+                    <a href="{% url user blog.user.id %}">
+                        <i class="icon-user"></i>
+                        <small> {{ blog.user.username }}</small> 
+                    </a>
+                    <i class="icon-time"></i>
+                    <small> {{ blog.publish_time }}</small>
+                    {% block blogtag %}
+                    <i class="icon-tag"></i>
+                    <small>{{ blog.tag }}</small>
+                    {% endblock %}
+                </p>
+            </div>
+            <div class="span1 offset5">
+                <a href="{% url detailblog blog.id %}" title="comment" class="badge badge-info">{{ blog.com_count }}
+                </a>
+            </div>
+        </div>
+    <hr>
+    {% endfor %}
+</article>
+{% endblock %}

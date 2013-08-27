@@ -1,0 +1,86 @@
+{% extends "blog_base.html" %}
+
+{% block title %} {{ blog.caption }} {% endblock %}
+
+{% block taglist %}
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li><a href="{% url bloglist %}" data-toggle="tab">new blog</a></li>
+        {% for tagt in tags %}
+            {% if tagt == blog.tag %}
+            <li class="active"><a href="{% url filtrblog tagt.id %}" data-toggle="tab">{{ tagt }}</a></li>
+            {% else %}
+            <li><a href="{% url filtrblog tagt.id %}" data-toggle="tab">{{ tagt }}</a></li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% load markup %}
+{% block article %}
+    <div class="row-fluid">
+        <div class="content span12">
+            <article class="content-main">
+                {% block article_title %}
+                <h2>{{ blog.caption|markdown }}</h2>
+                {% endblock %}
+                <p class="muted">
+                    <a href="{% url user blog.user.id %}">
+                        <i class="icon-user"></i>
+                        <small> {{ blog.user.username }}</small> 
+                    </a>
+                    <i class="icon-time"></i>
+                    <small> {{ blog.publish_time }}</small>
+                </p>
+                <hr>
+                <section>
+                    <div class="blog-content">
+                        {% block article_content %}
+                        {{ blog.content|markdown }}
+                        {% endblock %}
+                    </div>
+                    <hr>
+                    <hr>
+                </section>
+            </article>
+        </div>
+    </div>
+{% endblock %}
+
+{% block comments %}
+<div class="row-fluid">
+    <label>comments: </label>
+    <hr>
+    {% for comment in comments %}
+        <div class="span6">
+            <p class="muted">
+                <i class="icon-user"></i>
+                <small> {{ comment.user.username }}</small>
+                <i class="icon-time"></i>
+                <small> {{ comment.cmt_time }}</small>
+            </p>
+        </div>
+        <div class="comment-content span11">
+            {{ comment.content }}
+        <hr>
+        </div>
+    
+    {% endfor %}
+
+</div>
+
+{% if user.is_authenticated %}
+<div class="row-fluid">
+    <form action="{% url addcomment %}" method="post">
+    {% csrf_token %}
+        <label>your comment: </label>
+        <input type="hidden" name="blog_id" value={{blog.id}} />
+        <textarea class="span12" type="text" rows="3" name="comment" value="" id="comment"></textarea>
+        <input class="btn span4 pull-right" type="submit" value="submit">
+    </form>
+</div>
+{% else %}
+<p>请<a href="/register">登录</a>后，再发表评论。</p>
+{% endif %}
+{% endblock %}
